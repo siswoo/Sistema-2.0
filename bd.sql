@@ -9,11 +9,13 @@ CREATE TABLE roles (
 	estatus INT NOT NULL,
 	inicio INT NOT NULL,
 	responsable INT NOT NULL,
+	id_empresa INT NOT NULL,
 	fecha_creacion date NOT NULL,
 	PRIMARY KEY (id)
 ); ALTER TABLE roles CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-INSERT INTO roles (nombre,estatus,inicio,responsable,fecha_creacion) VALUES 
-('admin',1,1,1,'2021-04-18');
+INSERT INTO roles (nombre,estatus,inicio,responsable,id_empresa,fecha_creacion) VALUES 
+('admin',1,1,1,1,'2021-04-18'),
+('modelos',1,1,1,1,'2021-04-18');
 
 DROP TABLE IF EXISTS modulos;
 CREATE TABLE modulos (
@@ -79,12 +81,14 @@ CREATE TABLE usuarios (
 	genero INT NOT NULL,
 	direccion VARCHAR(250) NOT NULL,
 	responsable INT NOT NULL,
+	id_empresa INT NOT NULL,
+	id_pais INT NOT NULL,
 	fecha_creacion date NOT NULL,
 	PRIMARY KEY (id)
 ); ALTER TABLE usuarios CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO usuarios (nombre1,nombre2,apellido1,apellido2,documento_tipo,documento_numero,correo_personal,correo_empresa,clave,telefono,rol,estatus_modelo,estatus_nomina,estatus_satelite,estatus_pasantia,estatus_empresa,estatus_pasantes,genero,direccion,responsable,fecha_creacion) VALUES
-('Juan','Jose','Maldonado','La Cruz',1,'955948708101993','juanmaldonado.co@gmail.com','programador@camaleonmg.com','e1f2e2d4f6598c43c2a45d2bd3acb7be','3016984868',1,1,1,0,1,1,1,1,'Barrio Olarte',1,'2021-04-18');
+INSERT INTO usuarios (nombre1,nombre2,apellido1,apellido2,documento_tipo,documento_numero,correo_personal,correo_empresa,clave,telefono,rol,estatus_modelo,estatus_nomina,estatus_satelite,estatus_pasantia,estatus_empresa,estatus_pasantes,genero,direccion,responsable,id_empresa,id_pais,fecha_creacion) VALUES
+('Juan','Jose','Maldonado','La Cruz',1,'955948708101993','juanmaldonado.co@gmail.com','programador@camaleonmg.com','e1f2e2d4f6598c43c2a45d2bd3acb7be','3016984868',1,1,1,0,1,1,1,1,'Barrio Olarte',1,1,5,'2021-04-18');
 
 DROP TABLE IF EXISTS roles_funciones;
 CREATE TABLE roles_funciones (
@@ -325,3 +329,39 @@ CREATE TABLE apiwhatsapp (
 ); ALTER TABLE apiwhatsapp CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 INSERT INTO apiwhatsapp (token,url,fecha_creacion,hora_creacion) VALUES 
 ('hyg1a0vao95bq3ij',"instance261035","2021-06-30","03:39:25");
+
+DROP TABLE IF EXISTS paises;
+CREATE TABLE paises (
+	id INT AUTO_INCREMENT,
+	nombre VARCHAR(250) NOT NULL,
+	codigo VARCHAR(250) NOT NULL,
+	PRIMARY KEY (id)
+); ALTER TABLE paises CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO paises (codigo,nombre) VALUES 
+('54','Argentina'),
+('591','Bolivia'),
+('55','Brasil'),
+('56','Chile'),
+('57','Colombia'),
+('506','Costa Rica'),
+('53','Cuba'),
+('593','Ecuador'),
+('503','El Salvador'),
+('594','Guayana Francesa'),
+('1_granada','Granada'),
+('502','Guatemala'),
+('592','Guayana'),
+('509','Haití'),
+('504','Honduras'),
+('1_jamaica','Jamaica'),
+('52','México'),
+('505','Nicaragua'),
+('595','Paraguay'),
+('507','Panamá'),
+('51','Perú'),
+('1_puerto_rico','Puerto Rico'),
+('1_republica_dominicana','República Dominicana'),
+('597','Surinam'),
+('598','Uruguay'),
+('58','Venezuela');

@@ -14,7 +14,7 @@ if($condicion=='login1'){
 	}else if($estatus=='Modelo'){
 		$sql1 = "SELECT * FROM usuarios WHERE correo_personal = '".$usuario."' and clave = '".$clave."' and estatus_modelo = 1 LIMIT 1";
 	}else if($estatus=='Nomina'){
-		$sql1 = "SELECT dno.id as id FROM usuarios us 
+		$sql1 = "SELECT dno.id as id, us.id_empresa as empresa FROM usuarios us 
 		INNER JOIN datos_nominas dno ON us.id = dno.id_usuarios 
 		WHERE correo_empresa = '".$usuario."' and clave = '".$clave."' and estatus_nomina = 1 LIMIT 1";
 	}else if($estatus=='Satelite'){
@@ -29,9 +29,11 @@ if($condicion=='login1'){
 	if($contador1>=1){
 		while($row1 = mysqli_fetch_array($proceso1)) {
 			$usuario_id=$row1['id'];
+			$empresa=$row1['empresa'];
 			session_start();
 			$_SESSION["camaleonapp_id"]=$usuario_id;
 			$_SESSION["camaleonapp_estatus"]=$estatus;
+			$_SESSION["camaleonapp_empresa"]=$empresa;
 
 			$datos = [
 				"estatus" => $estatus,

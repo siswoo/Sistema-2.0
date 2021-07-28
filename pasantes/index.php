@@ -57,22 +57,24 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 		<div class="col-3 form-group form-check">
 			<label for="consultaporsede" style="color:black; font-weight: bold;">Consultas por Sede</label>
 			<select class="form-control" id="consultaporsede" name="consultaporsede">
+				<option value="">Todos</option>
 				<?php
-				/*
-				$sql9 = "SELECT * FROM sedes WHERE"
-				*/
+					$sql9 = "SELECT * FROM sedes WHERE id_empresa = ".$_SESSION['camaleonapp_empresa'];
+					$proceso9 = mysqli_query($conexion,$sql9);
+						while($row9 = mysqli_fetch_array($proceso9)) {
+							echo '
+								<option value="'.$row9["id"].'">'.$row9["nombre"].'</option>
+							';			
+						}
 				?>
-				<option value="10">10</option>
-				<option value="20">20</option>
-				<option value="30">30</option>
-				<option value="40">40</option>
-				<option value="50">50</option>
-				<option value="100">100</option>
 			</select>
+		</div>
+		<div class="col-2">
+			<br>
+			<button type="button" class="btn btn-info mt-2" onclick="filtrar1();">Filtrar</button>
 		</div>
 	</div>
 </div>
-<button type="button" class="btn btn-info" onclick="prueba1();">Filtrar</button>
 
 <div id="resultado_table1">Aqui!</div>
 
@@ -373,14 +375,23 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 <script>
 
 	$(document).ready(function() {
-		prueba1();
+		filtrar1();
 	} );
 
-	function prueba1(){
-		var pagina = $('#datatables').data('pagina');
-		var consultasporpagina = $('#datatables').data('consultasporpagina');
-		var sede = $('#datatables').data('sede');
-		var filtrado = $('#datatables').data('filtrado');
+	function filtrar1(){
+		var input_consultasporpagina = $('#consultasporpagina').val();
+		var input_buscarfiltro = $('#buscarfiltro').val();
+		var input_consultaporsede = $('#consultaporsede').val();
+		
+		$('#datatables').attr({'data-consultasporpagina':input_consultasporpagina})
+		$('#datatables').attr({'data-filtrado':input_buscarfiltro})
+		$('#datatables').attr({'data-sede':input_consultaporsede})
+
+		var pagina = $('#datatables').attr('data-pagina');
+		var consultasporpagina = $('#datatables').attr('data-consultasporpagina');
+		var sede = $('#datatables').attr('data-sede');
+		var filtrado = $('#datatables').attr('data-filtrado');
+		var ubicacion_url = '<?php echo $ubicacion_url; ?>';
 
 		$.ajax({
 			type: 'POST',
@@ -391,11 +402,12 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 				"consultasporpagina": consultasporpagina,
 				"sede": sede,
 				"filtrado": filtrado,
+				"link1": ubicacion_url,
 				"condicion": "table1",
 			},
 
 			success: function(respuesta) {
-				console.log(respuesta);
+				//console.log(respuesta);
 				if(respuesta["estatus"]=="ok"){
 					$('#resultado_table1').html(respuesta["html"]);
 				}
@@ -405,6 +417,11 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 				console.log(respuesta['responseText']);
 			}
 		});
+	}
+
+	function paginacion1(value){
+		$('#datatables').attr({'data-pagina':value})
+		filtrar1();
 	}
 
 	$('#myModal').on('shown.bs.modal', function () {

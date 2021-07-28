@@ -143,6 +143,15 @@ session_destroy();
 
 <script>
 
+	$(document).ready(function() {
+		/*******************PRUEBAS*********************/
+		//$('#usuario').val("juanmaldonado.co@gmail.com");
+		$('#usuario').val("programador@camaleonmg.com");
+		$('#clave').val("2421187");
+		$('#estatus').val("Nomina");
+		/***********************************************/
+	});
+
 	$('#myModal').on('shown.bs.modal', function () {
 	  	$('#myInput').trigger('focus')
 	});
