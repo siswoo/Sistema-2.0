@@ -14,7 +14,7 @@ if($condicion=='login1'){
 	}else if($estatus=='Modelo'){
 		$sql1 = "SELECT * FROM usuarios WHERE correo_personal = '".$usuario."' and clave = '".$clave."' and estatus_modelo = 1 LIMIT 1";
 	}else if($estatus=='Nomina'){
-		$sql1 = "SELECT dno.id as id, us.id_empresa as empresa FROM usuarios us 
+		$sql1 = "SELECT dno.id_usuarios as id, us.id_empresa as empresa FROM usuarios us 
 		INNER JOIN datos_nominas dno ON us.id = dno.id_usuarios 
 		WHERE correo_empresa = '".$usuario."' and clave = '".$clave."' and estatus_nomina = 1 LIMIT 1";
 	}else if($estatus=='Satelite'){

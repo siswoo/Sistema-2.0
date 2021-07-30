@@ -636,4 +636,38 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 		});
 	}
 
+	function aceptar_pasante1(id){
+		Swal.fire({
+			title: 'Estas seguro?',
+			text: "Verifica los datos antes de darle aceptar por favor!",
+			icon: 'warning',
+			showConfirmButton: true,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Si, Eliminar registro!',
+			cancelButtonText: 'Cancelar'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					type: 'POST',
+					url: '../script/crud_pasantes.php',
+					dataType: "JSON",
+					data: {
+						"id": id,
+						"condicion": "aceptar_pasante1",
+					},
+
+					success: function(respuesta) {
+						console.log(respuesta);
+					},
+
+					error: function(respuesta) {
+						console.log(respuesta);
+					}
+				});
+			}
+		})
+	}
+
 </script>

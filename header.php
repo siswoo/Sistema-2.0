@@ -1,143 +1,48 @@
 <?php
-$sqlh1 = "SELECT * FROM funciones_usuarios WHERE id_usuarios = ".$_SESSION["camaleonapp_id"]." and id_usuario_rol = '".$_SESSION['camaleonapp_estatus']."' ORDER BY id_modulos ASC";
-$procesoh1 = mysqli_query($conexion,$sqlh1);
+$sql1 = "SELECT mo.nombre as modulo_nombre, mosub.url as modulo_sub_url, mosub.nombre as modulo_sub_nombre FROM modulos mo 
+INNER JOIN modulos_sub mosub 
+ON mo.id = mosub.id_modulos 
+INNER JOIN modulos_empresas moem 
+ON mo.id = moem.id_modulos 
+INNER JOIN funciones_usuarios fuus 
+ON mo.id = fuus.id_modulos 
+INNER JOIN modulos_sub_usuarios mosuus 
+ON mosub.id = mosuus.id_modulos_sub 
+WHERE mo.estatus = 1 and mosub.estatus = 1 and moem.id_empresas = ".$_SESSION['camaleonapp_empresa']." and moem.estatus = 1 and fuus.id_usuarios = ".$_SESSION['camaleonapp_id']." and fuus.id_usuario_rol = '".$_SESSION['camaleonapp_estatus']."' and fuus.id_empresa = ".$_SESSION['camaleonapp_empresa']." and mosuus.id_usuarios = ".$_SESSION['camaleonapp_id'];
+$proceso1 = mysqli_query($conexion,$sql1);
 $navbar1 = '';
-while($row1 = mysqli_fetch_array($procesoh1)) {
-	$id_modulos = $row1["id_modulos"];
-	$sqlh2 = "SELECT * FROM modulos WHERE id = $id_modulos";
-	$procesoh2 = mysqli_query($conexion,$sqlh2);
-	while($row2 = mysqli_fetch_array($procesoh2)) {
-		$modulos_nombre = $row2["nombre"];
-		switch ($modulos_nombre) {
-			case 'pasantes':
-				if($ubicacion==$modulos_nombre){
-					$navbar1 .= '
-						<li class="nav-item active">
-							<a class="nav-link" href="../pasantes/index.php">PASANTES</a>
-						</li>
-					';
-				}else{
-					$navbar1 .= '
-						<li class="nav-item">
-							<a class="nav-link" href="../pasantes/index.php">PASANTES</a>
-						</li>
-					';
-				}
-			break;
+$modulo_repetido = '';
+$sub_modulo_repetido = '';
+$navbar_contador1 = 0;
+$navbar_contador2 = 0;
 
-			case 'modelos':
-				$sqlh3 = "SELECT * FROM modulos_sub_usuarios WHERE id_usuarios = ".$_SESSION["camaleonapp_id"];
-				$procesoh3 = mysqli_query($conexion,$sqlh3);
-				$contadorh3 = mysqli_num_rows($procesoh3);
-				if($contadorh3>=1){
-					if($ubicacion==$modulos_nombre){
-						$navbar1 .= '
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle
-						'; 
-						if($ubicacion==$modulos_nombre){$navbar1 .= ' active ';}
-						$navbar1 .= '" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									MODELOS
-								</a>
-						';
-					}
-						
-					$navbar1 .= '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
-						
-					while($row3 = mysqli_fetch_array($procesoh3)) {	
-						$id_modulos_sub = $row3["id_modulos_sub"];
-						$sqlh4 = "SELECT * FROM modulos_sub WHERE id = ".$id_modulos_sub;
-						$procesoh4 = mysqli_query($conexion,$sqlh4);
-						while($row4 = mysqli_fetch_array($procesoh4)) {
-							$modulos_sub_url = $row4["url"];
-							$modulos_sub_nombre = $row4["nombre"];
-							$navbar1 .= '<a class="dropdown-item" href="'.$modulos_sub_url.'">'.$modulos_sub_nombre.'</a>';
-						}
-					}
-						
-					$navbar1 .= '</div>';
-					$navbar1 .= '</li>';
-						
-				}
+while($row1 = mysqli_fetch_array($proceso1)) {
+	$modulo_nombre = $row1["modulo_nombre"];
+	$modulo_sub_url = $row1["modulo_sub_url"];
+	$modulo_sub_nombre = $row1["modulo_sub_nombre"];
 
-			break;
+	if($modulo_repetido!=$modulo_nombre){
 
-			case 'paginas':
-				if($ubicacion==$modulos_nombre){
-					$navbar1 .= '
-						<li class="nav-item active">
-							<a class="nav-link" href="../paginas/index.php">PAGINAS</a>
-						</li>
-					';
-				}else{
-					$navbar1 .= '
-						<li class="nav-item">
-							<a class="nav-link" href="../paginas/index.php">PAGINAS</a>
-						</li>
-					';
-				}
-			break;
-
-			case 'presabanas':
-				if($ubicacion==$modulos_nombre){
-					$navbar1 .= '
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								PRESABANAS
-							</a>
-					';
-					$sqlh3 = "SELECT * FROM modulos_sub_usuarios WHERE id_usuarios = ".$_SESSION["camaleonapp_id"];
-					$procesoh3 = mysqli_query($conexion,$sqlh3);
-					$contadorh3 = mysqli_num_rows($procesoh3);
-					if($contadorh3>=1){
-						$navbar1 .= '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
-						while($row3 = mysqli_fetch_array($procesoh3)) {	
-							$id_modulos_sub = $row3["id_modulos_sub"];
-							$sqlh4 = "SELECT * FROM modulos_sub WHERE id = ".$id_modulos_sub;
-							$procesoh4 = mysqli_query($conexion,$sqlh4);
-							while($row4 = mysqli_fetch_array($procesoh4)) {
-								$modulos_sub_url = $row4["url"];
-								$modulos_sub_nombre = $row4["nombre"];
-								$navbar1 .= '<a class="dropdown-item" href="'.$modulos_sub_url.'">'.$modulos_sub_nombre.'</a>';
-							}
-						}
-						$navbar1 .= '</div>';
-					}
-					$navbar1 .= '</li>';
-				}else{
-					$navbar1 .= '
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								PRESABANAS
-							</a>
-					';
-					$sqlh3 = "SELECT * FROM modulos_sub_usuarios WHERE id_usuarios = ".$_SESSION["camaleonapp_id"];
-					$procesoh3 = mysqli_query($conexion,$sqlh3);
-					$contadorh3 = mysqli_num_rows($procesoh3);
-					if($contadorh3>=1){
-						$navbar1 .= '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
-						while($row3 = mysqli_fetch_array($procesoh3)) {	
-							$id_modulos_sub = $row3["id_modulos_sub"];
-							$sqlh4 = "SELECT * FROM modulos_sub WHERE id = ".$id_modulos_sub;
-							$procesoh4 = mysqli_query($conexion,$sqlh4);
-							while($row4 = mysqli_fetch_array($procesoh4)) {
-								$modulos_sub_url = $row4["url"];
-								$modulos_sub_nombre = $row4["nombre"];
-								$navbar1 .= '<a class="dropdown-item" href="../modelos/'.$modulos_sub_url.'">'.$modulos_sub_nombre.'</a>';
-							}
-						}
-						$navbar1 .= '</div>';
-					}
-					$navbar1 .= '</li>';
-				}
-			break;
-			
-			default:
-				# code...
-				break;
+		if($navbar_contador1>=1){
+			$navbar1 .= '</div></li>';
 		}
+
+		$modulo_repetido = $modulo_nombre;
+		$navbar_contador1 = $navbar_contador1+1;
+		$navbar1 .= '
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.mb_strtoupper($modulo_nombre).'</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="../'.$modulo_nombre."/".$modulo_sub_url.'">'.$modulo_sub_nombre.'</a>
+		';
+	}else if($sub_modulo_repetido!=$modulo_sub_url){
+		$sub_modulo_repetido = $modulo_sub_url;
+		$navbar1 .= '
+				<a class="dropdown-item" href="../'.$modulo_nombre."/".$modulo_sub_url.'">'.$modulo_sub_nombre.'</a>
+		';
 	}
 }
+
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<a class="navbar-brand" href="../welcome/index.php">
@@ -165,22 +70,6 @@ while($row1 = mysqli_fetch_array($procesoh1)) {
 			}
 			echo $navbar1;
 			?>
-			<!--
-			<li class="nav-item">
-				<a class="nav-link" href="#">Link</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown
-				</a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="#">Action</a>
-         			<a class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div>
-      		</li>
-      		-->
     	</ul>
   	</div>
 </nav>

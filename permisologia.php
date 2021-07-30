@@ -1,7 +1,7 @@
 <?php
 $ubicacion_url = $_SERVER["PHP_SELF"];
 $ubicacion_actual_modulo = explode("/",$ubicacion_url);
-$ubicacion_actual_modulo[2];
+$ubicacion_actual_modulo = $ubicacion_actual_modulo[2];
 $sqlper1 = "SELECT mo.estatus as estatus, mo.nombre as nombre, fus.id_usuarios as id_usuario, fus.crear as crear, fus.modificar as modificar, fus.eliminar as eliminar, fus.id_usuario_rol as rol FROM modulos mo
 INNER JOIN funciones_usuarios fus
 ON fus.id_modulos = mo.id 

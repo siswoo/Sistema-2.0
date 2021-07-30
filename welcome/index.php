@@ -14,6 +14,7 @@ session_start();
 <?php
 $ubicacion='Inicio';
 include("../script/conexion.php");
+include("../permisologia.php");
 include("../header.php");
 ?>
 

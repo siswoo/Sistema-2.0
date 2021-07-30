@@ -10,8 +10,6 @@ $db2 = mysqli_select_db( $conexion2, $basededatos2 ) or die ( "Error con la base
 if (!mysqli_set_charset($conexion2, "utf8")) {
     printf("Error cargando el conjunto de caracteres utf8: %s\n", mysqli_error($conexion2));
     exit();
-} else {
-    //printf("Conjunto de caracteres actual: %s\n", mysqli_character_set_name($conexion));
-}
+} else {}
 
 date_default_timezone_set("America/Bogota");

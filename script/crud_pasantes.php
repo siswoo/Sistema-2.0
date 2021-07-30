@@ -51,13 +51,39 @@ if($condicion=='table1'){
 
 	$limit = $consultasporpagina;
 	$offset = ($pagina - 1) * $consultasporpagina;
-	/*
-	$sql1 = "SELECT * FROM datos_pasantes";
-	$proceso1 = mysqli_query($conexion,$sql1);
-	$conteo1 = mysqli_num_rows($proceso1);
 
-	$paginas = ceil($conteo1 / $consultasporpagina);
-	*/
+	$sql1 = "SELECT 
+		dpa.id as id,
+		dti.nombre as documento_tipo,
+		us.documento_numero as documento_numero,
+		us.nombre1 as nombre1,
+		us.nombre2 as nombre2,
+		us.apellido1 as apellido1,
+		us.apellido2 as apellido2,
+		ge.nombre as genero,
+		us.correo_personal as correo,
+		us.telefono as telefono,
+		us.estatus_pasantes as estatus,
+		pa.nombre as pais,
+		pa.codigo as pais_codigo,
+		se.nombre as sede,
+		se.id as id_sede,
+		dpa.fecha_creacion as fecha_creacion
+		FROM usuarios us
+		INNER JOIN datos_pasantes dpa
+		ON us.id = dpa.id_usuarios 
+		INNER JOIN documento_tipo dti
+		ON us.documento_tipo = dti.id
+		INNER JOIN genero ge
+		ON us.genero = ge.id
+		INNER JOIN paises pa
+		ON us.id_pais = pa.id
+		INNER JOIN sedes se
+		ON dpa.sede = se.id 
+		WHERE us.id != 0 
+		".$filtrado." 
+		".$sede."
+	";
 
 	$sql2 = "SELECT 
 		dpa.id as id,
@@ -93,8 +119,9 @@ if($condicion=='table1'){
 		ORDER BY dpa.fecha_creacion DESC LIMIT ".$limit." OFFSET ".$offset."
 	";
 
+	$proceso1 = mysqli_query($conexion,$sql1);
 	$proceso2 = mysqli_query($conexion,$sql2);
-	$conteo1 = mysqli_num_rows($proceso2);
+	$conteo1 = mysqli_num_rows($proceso1);
 	$paginas = ceil($conteo1 / $consultasporpagina);
 
 	$html = '';
@@ -131,7 +158,7 @@ if($condicion=='table1'){
 		                <tr id="tr_'.$row2["id"].'">
 		                    <td style="text-align:center;">'.$row2["documento_tipo"].'</td>
 		                    <td style="text-align:center;">'.$row2["documento_numero"].'</td>
-		                    <td style="text-align:justify;">'.$row2["nombre1"]." ".$row2["nombre2"]." ".$row2["apellido1"]." ".$row2["apellido2"].'</td>
+		                    <td>'.$row2["nombre1"]." ".$row2["nombre2"]." ".$row2["apellido1"]." ".$row2["apellido2"].'</td>
 		                    <td style="text-align:center;">'.$row2["genero"].'</td>
 		                    <td style="text-align:center;">'.$row2["correo"].'</td>
 		                    <td style="text-align:center;">'.$row2["telefono"].'</td>
@@ -139,7 +166,7 @@ if($condicion=='table1'){
 		                    <td style="text-align:center;">'.$row2["sede"].'</td>
 		                    <td nowrap="nowrap">'.$row2["fecha_creacion"].'</td>
 		                    <td nowrap="nowrap">
-		                    	<button type="button" class="btn btn-success">A</button>
+		                    	<button type="button" class="btn btn-success" onclick="aceptar_pasante1('.$row2["id"].');">A</button>
 		                    	<button type="button" class="btn btn-danger">R</button>
 		                    </td>
 		                </tr>
@@ -272,7 +299,6 @@ if($condicion=='table1'){
 }
 
 
-
 if($condicion=='cambio_estatus1'){
 	$id = $_POST['id'];
 	$estatus = $_POST['estatus'];
@@ -344,6 +370,23 @@ if($condicion=='cambio_estatus1'){
 
 
 
+	echo json_encode($datos);
+}
+
+if($condicion=='aceptar_pasante1'){
+	$sql1 = "SELECT * FROM datos_modelos WHERE id = ".$id;
+	$proceso1 = mysqli_query($conexion,$sql1);
+	if($contador2==0){
+		$sql3 = "SELECT * FROM datos_pasantes WHERE id = ".$id;
+		$proceso3 = mysqli_query($conexion,$sql3);
+		while($row3 = mysqli_fetch_array($proceso3)) {
+			//
+		}
+	}
+	$datos = [
+		"estatus"	=> "repetidos",
+	];
+	
 	echo json_encode($datos);
 }
 
