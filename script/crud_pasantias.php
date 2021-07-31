@@ -29,7 +29,8 @@ if($condicion=='registro1'){
 
 	if($correo!=$correo2){
 		$datos = [
-			"estatus" => "correos diferentes",
+			"estatus" => "error",
+			"msg" => "Correos Diferentes!",
 		];
 		echo json_encode($datos);
 		exit;
@@ -41,7 +42,21 @@ if($condicion=='registro1'){
 
 	if($contador1>=1){
 		$datos = [
-			"estatus" => "ya existe pasante",
+			"estatus" => "error",
+			"msg" => "ya existe pasante!",
+		];
+		echo json_encode($datos);
+		exit;
+	}
+
+	$sql10 = "SELECT * FROM usuarios WHERE correo_personal = '".$correo."'";
+	$proceso10 = mysqli_query($conexion,$sql10);
+	$contador10 = mysqli_num_rows($proceso10);
+
+	if($contador10>=1){
+		$datos = [
+			"estatus" => "error",
+			"msg" => "ya existe un registro con dicho correo!",
 		];
 		echo json_encode($datos);
 		exit;
@@ -80,15 +95,33 @@ if($condicion=='registro1'){
 	}
 	/***********************************************************/
 
-	$sql2 = "SELECT * FROM usuarios WHERE documento_numero = '".$documento_numero."'";
+	$sql2 = "SELECT * FROM usuarios WHERE documento_numero = '".$documento_numero."' and correo_personal = '".$correo."'";
 	$proceso2 = mysqli_query($conexion,$sql2);
 	$contador2 = mysqli_num_rows($proceso2);
 	if($contador2>=1){
-		$sql3 = "UPDATE usuarios SET estatus_pasantes = 1";
-		$proceso3 = mysqli_query($conexion,$sql3);
+
 		while($row2 = mysqli_fetch_array($proceso2)) {
-			$usuario_id = $row2["id"];
+			$usuario_id = $row2["usuario_id"];
+			$usuario_pasante_estatus = $row2["estatus_pasantes"];
+			$id_pais = $row2["id_pais"];
+			$sql3 = "SELECT * FROM pais WHERE id = ".$id_pais;
+			$proceso3 = mysqli_query($conexion,$sql3);
+			while($row3 = mysqli_fetch_array($proceso3)) {
+				$codigo_pais = $row3["codigo"];
+			}
 		}
+
+		if($usuario_pasante_estatus==1){
+			$datos = [
+				"estatus" => "error",
+				"msg" => "Ya te has registrado anteriormente como pasante!",
+			];
+			echo json_encode($datos);
+			exit;
+		}
+
+		$sql3 = "UPDATE usuarios SET estatus_pasantes = 1 WHERE id = ".$usuario_id;
+		$proceso3 = mysqli_query($conexion,$sql3);
 
 		$sql4 = "SELECT * FROM datos_pasantias WHERE id_usuarios = ".$_SESSION["camaleonapp_id"];
 		$proceso4 = mysqli_query($conexion,$sql4);
@@ -96,11 +129,11 @@ if($condicion=='registro1'){
 			$usuario_session_sede = $row4["sede"];
 		}
 
-		$sql5 = "INSERT INTO datos_pasantes (id_usuarios,sede,estatus,fecha_creacion) VALUES ('$usuario_id','$usuario_session_sede',1,'$fecha_creacion')";
+		$sql5 = "INSERT INTO datos_pasantes (id_usuarios,sede,estatus,fecha_creacion) VALUES (".$usuario_id.",".$usuario_session_sede.",1,'$fecha_creacion')";
 		$proceso5 = mysqli_query($conexion,$sql5);
 
-		$msg = "Te has registrado recientemente en nuestra app camaleonmg.com como pasante";
-		$phone = '57'.$telefono;
+		$msg = "Ya estas registrado en nuestra APP https://www.camaleonmg.com como pasante";
+		$phone = $codigo_pais.$telefono;
 		$result = sendMessage($phone,$msg);
 		if($result !== false){
 			if($result->sent == 1){}else{}
@@ -156,7 +189,11 @@ if($condicion=='registro1'){
 		$clave_generada1 = rand(6,99999999);
 		$clave = md5($clave_generada1);
 
-		$sql6 = "INSERT INTO usuarios (nombre1,nombre2,apellido1,apellido2,documento_tipo,documento_numero,correo_personal,clave,telefono,estatus_pasantes,genero,direccion,responsable,fecha_creacion) VALUES ('$primer_nombre','$segundo_nombre','$primer_apellido','$segundo_apellido','$documento_tipo','$documento_numero','$correo','$clave','$telefono',1,'$genero','$direccion','$responsable','$fecha_creacion')";
+		$id_empresa = $_SESSION['camaleonapp_empresa'];
+		$id_pais = 5;
+		$codigo_pais = 57;
+
+		$sql6 = "INSERT INTO usuarios (nombre1,nombre2,apellido1,apellido2,documento_tipo,documento_numero,correo_personal,clave,telefono,estatus_pasantes,genero,direccion,responsable,id_empresa,id_pais,fecha_creacion) VALUES ('$primer_nombre','$segundo_nombre','$primer_apellido','$segundo_apellido','$documento_tipo','$documento_numero','$correo','$clave','$telefono',1,'$genero','$direccion','$responsable',$id_empresa,$id_pais,'$fecha_creacion')";
 		$proceso6 = mysqli_query($conexion,$sql6);
 		$ultimo_id_usuario=mysqli_insert_id($conexion);
 
@@ -169,13 +206,14 @@ if($condicion=='registro1'){
 		$sql8 = "INSERT INTO datos_pasantes (id_usuarios,sede,estatus,fecha_creacion) VALUES ('$ultimo_id_usuario','$usuario_session_sede',1,'$fecha_creacion')";
 		$proceso8 = mysqli_query($conexion,$sql8);
 
-		$msg = "Bienvenido! Datos de tu cuenta Camaleón... recuerda que la página para ingresar es camaleonmg.com
+		$msg = "Bienvenido a Camaleon Models! 
+Datos de tu cuenta Camaleón... recuerda que la página para ingresar es https://www.camaleonmg.com
 ---------------------------------------------------------
 Usuario: ".$correo."
 Clave: ".$clave_generada1."
 Módulo: Módelo
 ---------------------------------------------------------";
-		$phone = '57'.$telefono;
+		$phone = $codigo_pais.$telefono;
 		$result = sendMessage($phone,$msg);
 		if($result !== false){
 			if($result->sent == 1){}else{}

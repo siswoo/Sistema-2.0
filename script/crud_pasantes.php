@@ -22,7 +22,8 @@ include('conexion2.php');
 $condicion = $_POST["condicion"];
 $datetime = date('Y-m-d H:i:s');
 $empresa = $_SESSION["camaleonapp_empresa"];
-
+$fecha_creacion = date('Y-m-d');
+$fecha_modificacion = date('Y-m-d');
 
 if($condicion=='table1'){
 	$pagina = $_POST["pagina"];
@@ -53,7 +54,8 @@ if($condicion=='table1'){
 	$offset = ($pagina - 1) * $consultasporpagina;
 
 	$sql1 = "SELECT 
-		dpa.id as id,
+		us.id as usuario_id,
+		dpa.id as pasante_id,
 		dti.nombre as documento_tipo,
 		us.documento_numero as documento_numero,
 		us.nombre1 as nombre1,
@@ -68,7 +70,8 @@ if($condicion=='table1'){
 		pa.codigo as pais_codigo,
 		se.nombre as sede,
 		se.id as id_sede,
-		dpa.fecha_creacion as fecha_creacion
+		dpa.fecha_creacion as fecha_creacion,
+		us.id_empresa as usuario_empresa
 		FROM usuarios us
 		INNER JOIN datos_pasantes dpa
 		ON us.id = dpa.id_usuarios 
@@ -86,7 +89,8 @@ if($condicion=='table1'){
 	";
 
 	$sql2 = "SELECT 
-		dpa.id as id,
+		us.id as usuario_id,
+		dpa.id as pasante_id,
 		dti.nombre as documento_tipo,
 		us.documento_numero as documento_numero,
 		us.nombre1 as nombre1,
@@ -97,11 +101,13 @@ if($condicion=='table1'){
 		us.correo_personal as correo,
 		us.telefono as telefono,
 		us.estatus_pasantes as estatus,
+		dpa.estatus as pasantes_estatus,
 		pa.nombre as pais,
 		pa.codigo as pais_codigo,
 		se.nombre as sede,
 		se.id as id_sede,
-		dpa.fecha_creacion as fecha_creacion
+		dpa.fecha_creacion as fecha_creacion,
+		us.id_empresa as usuario_empresa
 		FROM usuarios us
 		INNER JOIN datos_pasantes dpa
 		ON us.id = dpa.id_usuarios 
@@ -109,10 +115,12 @@ if($condicion=='table1'){
 		ON us.documento_tipo = dti.id
 		INNER JOIN genero ge
 		ON us.genero = ge.id
-		INNER JOIN paises pa
-		ON us.id_pais = pa.id
 		INNER JOIN sedes se
 		ON dpa.sede = se.id 
+		INNER JOIN empresas em
+		ON us.id_empresa = em.id 
+		INNER JOIN paises pa
+		ON pa.id = us.id_pais
 		WHERE us.id != 0 
 		".$filtrado." 
 		".$sede." 
@@ -147,15 +155,15 @@ if($condicion=='table1'){
 	';
 	if($conteo1>=1){
 		while($row2 = mysqli_fetch_array($proceso2)) {
-			if($row2["estatus"]==1){
+			if($row2["pasantes_estatus"]==1){
 				$pasante_estatus = "Proceso";
-			}else if($row2["estatus"]==2){
+			}else if($row2["pasantes_estatus"]==2){
 				$pasante_estatus = "Aceptado";
-			}else if($row2["estatus"]==3){
+			}else if($row2["pasantes_estatus"]==3){
 				$pasante_estatus = "Rechazado";
 			}
 			$html .= '
-		                <tr id="tr_'.$row2["id"].'">
+		                <tr id="tr_'.$row2["pasante_id"].'">
 		                    <td style="text-align:center;">'.$row2["documento_tipo"].'</td>
 		                    <td style="text-align:center;">'.$row2["documento_numero"].'</td>
 		                    <td>'.$row2["nombre1"]." ".$row2["nombre2"]." ".$row2["apellido1"]." ".$row2["apellido2"].'</td>
@@ -165,12 +173,32 @@ if($condicion=='table1'){
 		                    <td  style="text-align:center;">'.$pasante_estatus.'</td>
 		                    <td style="text-align:center;">'.$row2["sede"].'</td>
 		                    <td nowrap="nowrap">'.$row2["fecha_creacion"].'</td>
-		                    <td nowrap="nowrap">
-		                    	<button type="button" class="btn btn-success" onclick="aceptar_pasante1('.$row2["id"].');">A</button>
-		                    	<button type="button" class="btn btn-danger">R</button>
-		                    </td>
-		                </tr>
 		    ';
+		    if($row2["pasantes_estatus"]==1){
+		    	$html .= '
+		    				<td class="text-center" nowrap="nowrap">
+					    		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#aceptar_pasante1_modal1" onclick="aceptar_pasante1_modal1('.$row2["pasante_id"].','.$row2["usuario_id"].');">A</button>
+					    		<button type="button" class="btn btn-danger" onclick="rechazar_pasante1('.$row2["pasante_id"].','.$row2["usuario_id"].');">R</button>
+		    		 		</td>
+		    	';
+		    }else if($row2["pasantes_estatus"]==2){
+		    	$html .= '
+		    				<td class="text-center" nowrap="nowrap">
+					    		<button type="button" class="btn btn-danger" onclick="rechazar_pasante1('.$row2["pasante_id"].','.$row2["usuario_id"].');">R</button>
+		    		 		</td>
+		    	';
+		    }else if($row2["pasantes_estatus"]==3){
+		    	$html .= '
+		    				<td class="text-center" nowrap="nowrap">
+					    		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#aceptar_pasante1_modal1" onclick="aceptar_pasante1_modal1('.$row2["pasante_id"].','.$row2["usuario_id"].');">A</button>
+		    		 		</td>
+		    	';
+		    }
+		    
+		    $html .= '
+		    			</tr>
+		    ';
+
 		}
 	}else{
 		$html .= '<tr><td colspan="10" class="text-center" style="font-weight:bold;font-size:20px;">Sin Resultados</td></tr>';
@@ -298,7 +326,6 @@ if($condicion=='table1'){
 	echo json_encode($datos);
 }
 
-
 if($condicion=='cambio_estatus1'){
 	$id = $_POST['id'];
 	$estatus = $_POST['estatus'];
@@ -374,20 +401,185 @@ if($condicion=='cambio_estatus1'){
 }
 
 if($condicion=='aceptar_pasante1'){
-	$sql1 = "SELECT * FROM datos_modelos WHERE id = ".$id;
+	$turno = $_POST["turno"];
+	$sede = $_POST["sede"];
+	$usuario_id = $_POST["usuario_id"];
+	$pasante_id = $_POST["pasante_id"];
+
+	/**********CREACION DE LA FUNCION PARA WHATSAPP**********/
+	function sendMessage($to,$msg){
+		$data = [
+			'phone' => $to,
+			'body' => $msg,
+		];
+
+		include('conexion.php');
+
+		$sql9 = "SELECT * FROM apiwhatsapp";
+		$proceso9 = mysqli_query($conexion,$sql9);
+		while($row9 = mysqli_fetch_array($proceso9)) {
+			$CHAT_URL = $row9["url"];
+			$CHAT_TOKEN = $row9["token"];
+		}
+
+		$json = json_encode($data);
+		$url = 'https://api.chat-api.com/'.$CHAT_URL.'/sendMessage?token='.$CHAT_TOKEN;
+		$options = stream_context_create(['http' => [
+				'method' => 'POST',
+				'header' => 'Content-type: application/json',
+				'content' => $json
+			]
+		]);
+
+		$result = file_get_contents($url, false, $options);
+		if($result) return json_decode($result);
+
+		return false;
+	}
+	/***********************************************************/
+
+	$sql1 = "SELECT * FROM usuarios WHERE id = ".$usuario_id;
 	$proceso1 = mysqli_query($conexion,$sql1);
-	if($contador2==0){
-		$sql3 = "SELECT * FROM datos_pasantes WHERE id = ".$id;
-		$proceso3 = mysqli_query($conexion,$sql3);
-		while($row3 = mysqli_fetch_array($proceso3)) {
-			//
+	while($row1 = mysqli_fetch_array($proceso1)) {
+		$estatus_pasantes = $row1["estatus_pasantes"];
+		$usuario_estatus_modelo = $row1["estatus_modelo"];
+		$correo = $row1["correo_personal"];
+		$telefono = $row1["telefono"];
+		$id_pais = $row1["id_pais"];
+
+		if($usuario_estatus_modelo>=1){
+
+			$datos = [
+				"estatus"	=> "error",
+				"msg"	=> "Ya tiene un perfil de Modelo Creado!",
+			];
+		
+			echo json_encode($datos);
+			exit;
+
+		}else if($usuario_estatus_modelo==0){
+			$sql2 = "SELECT * FROM datos_modelos WHERE id_usuarios = ".$usuario_id;
+			$proceso2 = mysqli_query($conexion,$sql2);
+			$conteo2 = mysqli_num_rows($proceso2);
+
+			if($conteo2>=1){
+				$datos = [
+					"estatus"	=> "error",
+					"msg"	=> "Ya tiene un perfil de Modelo Creado!",
+				];
+				echo json_encode($datos);
+				exit;
+			}else if($conteo2==0){
+				$sql3 = "INSERT INTO datos_modelos (id_usuarios,turno,sede,estatus,fecha_creacion) VALUES (".$usuario_id.",".$turno.",".$sede.",2,'".$fecha_creacion."')";
+				$proceso3 = mysqli_query($conexion,$sql3);
+				$sql4 = "UPDATE usuarios SET estatus_pasantes = 1, estatus_modelo = 1, fecha_modificacion = '".$fecha_modificacion."' WHERE id = ".$usuario_id;
+				$proceso4 = mysqli_query($conexion,$sql4);
+				$sql5 = "UPDATE datos_pasantes SET estatus = 2, fecha_modificacion = '".$fecha_modificacion."' WHERE id = ".$pasante_id;
+				$proceso5 = mysqli_query($conexion,$sql5);
+
+				$sql6 = "SELECT * FROM paises WHERE id = ".$id_pais;
+				$proceso6 = mysqli_query($conexion,$sql6);
+				while($row6 = mysqli_fetch_array($proceso6)) {
+					$codigo_pais = $row6["codigo"];
+				}
+
+				/*****************APARTADO DE WHATSAPP************/
+				$msg = "Felicitaciones tu perfil ha sido aprobado para formar parte de la familia Camaleón!
+				El siguiente paso es completar tu formulario de contacto, puedes ingresar al sistema en el siguiente link https://www.camaleonmg.com";
+				$phone = $codigo_pais.$telefono;
+				$result = sendMessage($phone,$msg);
+				if($result !== false){
+					if($result->sent == 1){}else{}
+				}else{
+					var_dump($result);
+				}
+				/***************************************************/
+
+				/***************APARTADO DE CORREO*****************/
+				$mail = new PHPMailer(true);
+				try {
+				    $mail->isSMTP();
+				    $mail->CharSet = "UTF-8";
+				    $mail->Host = 'mail.camaleonmg.com';
+				    $mail->SMTPAuth = true;
+				    $mail->Username = 'noreply@camaleonmg.com';
+				    $mail->Password = 'juanmaldonado123';
+				    $mail->SMTPSecure = 'tls';
+				    $mail->Port = 587;
+
+				    $mail->setFrom('noreply@camaleonmg.com');
+				    $mail->addAddress($correo);
+				    $html = "
+				        <h2 style='color:#3F568A; text-align:center; font-family: Helvetica Neue,Helvetica,Arial,sans-serif;'>
+				            Felicitaciones tu perfil ha sido aprobado para iniciar como modelo.
+				            El siguiente paso es completar tu formulario de contacto, puedes ingresar al sistema en el siguiente link https://www.camaleonmg.com
+				        </h2>
+				    ";
+
+				    $mail->isHTML(true);
+				    $mail->Subject = 'Aprobacion Camaleon!';
+				    $mail->Body    = $html;
+				    $mail->AltBody = 'Este es el contenido del mensaje en texto plano';
+				 
+				    $mail->send();
+				} catch (Exception $e) {}
+				/**************************************************/
+
+				$datos = [
+					"estatus"	=> "ok",
+					"msg"	=> "Estatus Cambiado!",
+				];
+				echo json_encode($datos);
+				exit;
+			}
 		}
 	}
-	$datos = [
-		"estatus"	=> "repetidos",
-	];
-	
-	echo json_encode($datos);
+}
+
+if($condicion=='rechazar_pasante1'){
+	$usuario_id = $_POST["usuario_id"];
+	$pasante_id = $_POST["pasante_id"];
+
+	$sql1 = "SELECT * FROM usuarios WHERE id = ".$usuario_id;
+	$proceso1 = mysqli_query($conexion,$sql1);
+	while($row1 = mysqli_fetch_array($proceso1)) {
+		$estatus_pasantes = $row1["estatus_pasantes"];
+		$usuario_estatus_modelo = $row1["estatus_modelo"];
+
+		if($usuario_estatus_modelo>=1){
+
+			$datos = [
+				"estatus"	=> "error",
+				"msg"	=> "Ya tiene un perfil de Modelo Creado!",
+			];
+		
+			echo json_encode($datos);
+			exit;
+
+		}else if($usuario_estatus_modelo==0){
+			$sql2 = "SELECT * FROM datos_modelos WHERE id_usuarios = ".$usuario_id;
+			$proceso2 = mysqli_query($conexion,$sql2);
+			$conteo2 = mysqli_num_rows($proceso2);
+
+			if($conteo2>=1){
+				$datos = [
+					"estatus"	=> "error",
+					"msg"	=> "Ya tiene un perfil de Modelo Creado!",
+				];
+				echo json_encode($datos);
+				exit;
+			}else if($conteo2==0){
+				$sql5 = "UPDATE datos_pasantes SET estatus = 3 WHERE id = ".$pasante_id;
+				$proceso5 = mysqli_query($conexion,$sql5);
+				$datos = [
+					"estatus"	=> "ok",
+					"msg"	=> "Estatus Cambiado!",
+				];
+				echo json_encode($datos);
+				exit;
+			}
+		}
+	}
 }
 
 ?>

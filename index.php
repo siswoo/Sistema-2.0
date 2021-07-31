@@ -177,6 +177,20 @@ session_destroy();
 
 	        success: function(respuesta){
 	        	console.log(respuesta);
+
+	        	if(estatus=='Modelo'){
+	        		if(respuesta["respuesta"]=='error'){
+	        			Swal.fire({
+									title: 'Error',
+									text: respuesta["msg"],
+									icon: 'error',
+									position: 'center',
+									showConfirmButton: true,
+								});
+								return false;
+	        		}
+	        	}
+
 	        	if(respuesta["estatus"]=="sin resultados"){
 	        		Swal.fire({
 								title: 'Error',

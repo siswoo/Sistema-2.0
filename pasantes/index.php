@@ -233,134 +233,62 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 </div>
 -->
 
-<!-- Modal Editar Bancarios -->
-	<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal aceptar_pasante1_modal1 -->
+	<div class="modal fade" id="aceptar_pasante1_modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
-			<form action="#" method="POST" id="form_modal_edit" style="">
+			<form action="#" method="POST" id="aceptar_pasante1_modal1_formulario" style="">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Editar Datos</h5>
+						<h5 class="modal-title" id="exampleModalLabel">INDICAR DATOS</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 					    <div class="row">
-					    	<input type="hidden" name="edit_id" id="edit_id">
-					    	<div id="edit_alerta1" class="col-12 text-center mb-3" style="display: none; font-size: 13px; font-weight: bold; color: red;">
-					    		Estado Activo o Inactivo, Se debe modificar en el Modulo de Modelos
-					    	</div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_nombre1">Primer Nombre</label>
-							    <input type="text" id="edit_nombre1" name="edit_nombre1" class="form-control" required>
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_nombre2">Segundo Nombre</label>
-							    <input type="text" id="edit_nombre2" name="edit_nombre2" class="form-control">
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_apellido1">Primer Apellido</label>
-							    <input type="text" id="edit_apellido1" name="edit_apellido1" class="form-control" required>
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_apellido2">Segundo Apellido</label>
-							    <input type="text" id="edit_apellido2" name="edit_apellido2" class="form-control">
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_documento_tipo">Documento Tipo</label>
-							    <select id="edit_documento_tipo" name="edit_documento_tipo" class="form-control" required>
-							    	<option value="">Seleccione</option>
-							    	<?php
-							    	$sql6 = "SELECT * FROM documento_tipo";
-							    	$proceso6 = mysqli_query($conexion,$sql6);
-									while($row6 = mysqli_fetch_array($proceso6)) { ?>
-										<option value="<?php echo $row6['id']; ?>"><?php echo $row6['nombre']; ?></option>
-									<?php } ?>
-							    </select>
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_documento_numero">Documento Número</label>
-							    <input type="text" id="edit_documento_numero" name="edit_documento_numero" class="form-control">
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_correo_personal">Correo</label>
-							    <input type="text" id="edit_correo_personal" name="edit_correo_personal" class="form-control">
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_telefono">Teléfono</label>
-							    <input type="text" id="edit_telefono" name="edit_telefono" class="form-control">
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_genero">Genero</label>
-							    <select id="edit_genero" name="edit_genero" class="form-control" required>
-							    	<option value="">Seleccione</option>
-							    	<option value="Hombre">Hombre</option>
-							    	<option value="Mujer">Mujer</option>
-							    	<option value="Transgenero">Transgenero</option>
-							    </select>
-						    </div>
-						    <div class="col-6 form-group form-check">
-							    <label for="edit_sede">Sede</label>
-							    <select id="edit_sede" name="edit_sede" class="form-control" required>
-							    	<option value="">Seleccione</option>
-							    	<?php
-							    	$sql8 = "SELECT * FROM sedes";
-							    	$proceso8 = mysqli_query($conexion,$sql8);
-									while($row8 = mysqli_fetch_array($proceso8)) { ?>
-										<option value="<?php echo $row8['id']; ?>"><?php echo $row8['nombre']; ?></option>
-							    	<?php } ?>
-							    </select>
-						    </div>
-						</div>
-					</div>
-					<div class="modal-footer">
-				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-				        <button type="submit" class="btn btn-success" id="edit_submit1">Guardar</button>
-			      	</div>
-			    </div>
-		      </form>
-	    </div>
-	</div>
-<!-- FIN Modal Editar Bancarios -->
-
-<!-- Modal Editar Bancarios -->
-	<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<form action="#" method="POST" id="form_modal_peticion1" style="">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Peticiones</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-					    <div class="row">
-					    	<input type="hidden" name="peticion1_id" id="peticion1_id" value="">
+					    	<input type="hidden" name="pasante_id" id="pasante_id">
+					    	<input type="hidden" name="usuario_id" id="usuario_id">
 						    <div class="col-12 form-group form-check">
-							    <label for="peticion_opcion">Opción</label>
-							    <select id="peticion_opcion" name="peticion_opcion" class="form-control" required>
+							    <label for="turno" style="font-weight: bold;">Turno</label>
+							    <select name="turno" id="turno" class="form-control" required>
 							    	<option value="">Seleccione</option>
-							    	<option value="1">Cambio de Datos</option>
-							    	<option value="2">Cambio de Sede</option>
-							    	<option value="3">Cambio de Estatus</option>
+							    <?php
+							    	$sql10 = "SELECT * FROM turnos";
+							    	$proceso10 = mysqli_query($conexion,$sql10);
+							    	while($row10 = mysqli_fetch_array($proceso10)) {
+							    		$turnos_id = $row10["id"];
+							    		$turnos_nombre = $row10["nombre"];
+							    		echo '<option value="'.$turnos_id.'">'.$turnos_nombre.'</option>';
+							    	}
+							    ?>
 							    </select>
 						    </div>
 						    <div class="col-12 form-group form-check">
-						    	<label for="peticion_asunto">Asunto</label>
-						    	<input type="text" id="peticion_asunto" name="peticion_asunto" class="form-control" required>
+							    <label for="sede" style="font-weight: bold;">Sede</label>
+							    <select name="sede" id="sede" class="form-control" required>
+							    	<option value="">Seleccione</option>
+							    <?php
+							    	$sql11 = "SELECT * FROM sedes WHERE id_empresa = ".$_SESSION['camaleonapp_empresa'];
+							    	$proceso11 = mysqli_query($conexion,$sql11);
+							    	while($row11 = mysqli_fetch_array($proceso11)) {
+							    		$turnos_id = $row11["id"];
+							    		$turnos_nombre = $row11["nombre"];
+							    		echo '<option value="'.$turnos_id.'">'.$turnos_nombre.'</option>';
+							    	}
+							    ?>
+							    </select>
 						    </div>
-						</div>
+					    </div>
 					</div>
 					<div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-				        <button type="submit" class="btn btn-success" id="peticion_submit1">Guardar</button>
+				        <button type="submit" class="btn btn-success" id="submit_edit1">Guardar</button>
 			      	</div>
-			    </div>
-		      </form>
-	    </div>
+		      	</form>
+	    	</div>
+	  	</div>
 	</div>
-<!-- FIN Modal Editar Bancarios -->
+<!---------------------------------------->
 
 </body>
 </html>
@@ -376,6 +304,7 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 
 	$(document).ready(function() {
 		filtrar1();
+		setInterval('filtrar1()',5000);
 	} );
 
 	function filtrar1(){
@@ -428,215 +357,18 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 	  	$('#myInput').trigger('focus')
 	});
 
-	function editar1(id){
-		$.ajax({
-			type: 'POST',
-			url: '../script/crud_usuarios.php',
-			data: {
-				"id": id,
-				"condicion": "consultar_pasantes1",
-			},
-			dataType: "JSON",
-			success: function(respuesta) {
-				console.log(respuesta);
-				if(respuesta["estatus"]!=1){
-					$('#edit_nombre1').attr('disabled','true');
-					$('#edit_nombre2').attr('disabled','true');
-					$('#edit_apellido1').attr('disabled','true');
-					$('#edit_apellido2').attr('disabled','true');
-					$('#edit_documento_tipo').attr('disabled','true');
-					$('#edit_documento_numero').attr('disabled','true');
-					$('#edit_correo_personal').attr('disabled','true');
-					$('#edit_telefono').attr('disabled','true');
-					$('#edit_genero').attr('disabled','true');
-					$('#edit_submit1').attr('disabled','true');
-					$('#edit_sede').attr('disabled','true');
-				}else{
-					$('#edit_nombre1').removeAttr('disabled');
-					$('#edit_nombre2').removeAttr('disabled');
-					$('#edit_apellido1').removeAttr('disabled');
-					$('#edit_apellido2').removeAttr('disabled');
-					$('#edit_documento_tipo').removeAttr('disabled');
-					$('#edit_documento_numero').removeAttr('disabled');
-					$('#edit_correo_personal').removeAttr('disabled');
-					$('#edit_telefono').removeAttr('disabled');
-					$('#edit_genero').removeAttr('disabled');
-					$('#edit_submit1').removeAttr('disabled');
-					$('#edit_sede').removeAttr('disabled');
-				}
-				$("#edit_id").val(id);
-				$("#edit_estatus").val(respuesta["estatus"]);
-				$("#edit_nombre1").val(respuesta["nombre1"]);
-				$("#edit_nombre2").val(respuesta["nombre2"]);
-				$("#edit_apellido1").val(respuesta["apellido1"]);
-				$("#edit_apellido2").val(respuesta["apellido2"]);
-				$("#edit_documento_tipo").val(respuesta["documento_tipo"]);
-				$("#edit_documento_numero").val(respuesta["documento_numero"]);
-				$("#edit_correo_personal").val(respuesta["correo_personal"]);
-				$("#edit_telefono").val(respuesta["telefono"]);
-				$("#edit_genero").val(respuesta["genero"]);
-				$("#edit_direccion").val(respuesta["direccion"]);
-				$("#edit_sede").val(respuesta["sede"]);
-			},
-
-			error: function(respuesta) {
-				console.log(respuesta['responseText']);
-			}
-		});
+	function aceptar_pasante1_modal1(pasante_id,usuario_id){
+		$('#usuario_id').val(usuario_id);
+		$('#pasante_id').val(pasante_id);
 	}
 
-	$("#form_modal_edit").on("submit", function(e){
+	$("#aceptar_pasante1_modal1_formulario").on("submit", function(e){
 		e.preventDefault();
-		var f = $(this);
-		var edit_id = $('#edit_id').val();
-		var edit_nombre1 = $('#edit_nombre1').val();
-		var edit_nombre2 = $('#edit_nombre2').val();
-		var edit_apellido1 = $('#edit_apellido1').val();
-		var edit_apellido2 = $('#edit_apellido2').val();
-		var edit_documento_tipo = $('#edit_documento_tipo').val();
-		var edit_documento_numero = $('#edit_documento_numero').val();
-		var edit_correo_personal = $('#edit_correo_personal').val();
-		var edit_telefono = $('#edit_telefono').val();
-		var edit_genero = $('#edit_genero').val();
-		var edit_sede = $('#edit_sede').val();
-		/************************************/
-		var fc = $('#fc').val();
-		var fs = $('#fs').val();
-		/************************************/
+		var pasante_id = $('#pasante_id').val();
+		var usuario_id = $('#usuario_id').val();
+		var turno = $('#turno').val();
+		var sede = $('#sede').val();
 
-		$.ajax({
-	        url: '../script/crud_usuarios.php',
-	        type: 'POST',
-	        dataType: "JSON",
-	        data: {
-				"id": edit_id,
-				"nombre1": edit_nombre1,
-				"nombre2": edit_nombre2,
-				"apellido1": edit_apellido1,
-				"apellido2": edit_apellido2,
-				"documento_tipo": edit_documento_tipo,
-				"documento_numero": edit_documento_numero,
-				"correo_personal": edit_correo_personal,
-				"telefono": edit_telefono,
-				"genero": edit_genero,
-				"sede": edit_sede,
-				"condicion": "editar_pasantes1",
-			},
-
-	        beforeSend: function (){},
-
-	        success: function(respuesta){
-	        	console.log(respuesta);
-	        	if(respuesta["estatus"]==1){
-	        		Swal.fire({
-						title: 'Exito',
-						text: "Datos Modificados",
-						icon: 'success',
-						position: 'center',
-						showConfirmButton: false,
-						timer: 2000
-					});
-					$('#documento_tipo_'+edit_id).html(respuesta["documento_tipo"]);
-					$('#documento_numero_'+edit_id).html(respuesta["documento_numero"]);
-					$('#nombres_'+edit_id).html(respuesta["nombres"]);
-					$('#apellidos_'+edit_id).html(respuesta["apellidos"]);
-					$('#genero_'+edit_id).html(respuesta["genero"]);
-					$('#correo_personal_'+edit_id).html(respuesta["correo_personal"]);
-					$('#telefono_'+edit_id).html(respuesta["telefono"]);
-					$('#sede_nombre_'+edit_id).html(respuesta["sede"]);
-	        	}else if(respuesta["estatus"]==0){
-	        		Swal.fire({
-						title: 'Error',
-						text: "El pasante ya fue aceptado o rechazado",
-						icon: 'error',
-						position: 'center',
-						showConfirmButton: false,
-						timer: 2000
-					});
-	        	}
-
-	        	$("#exampleModal1").modal('hide');
-				$('#exampleModal1').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-	        },
-
-	        error: function(respuesta){
-	           	console.log(respuesta['responseText']);
-	        }
-	    });
-	});
-
-	function peticion1(id){
-		$.ajax({
-			type: 'POST',
-			url: '../script/crud_usuarios.php',
-			data: {
-				"id": id,
-				"condicion": "peticion_pasantes1",
-			},
-			dataType: "JSON",
-			success: function(respuesta) {
-				console.log(respuesta);
-				$("#peticion1_id").val(id);
-				$("#peticion1_sede").val(respuesta["sede"]);
-				$("#peticion1_estatus").val(respuesta["estatus"]);
-				$("#peticion1_turno").val(respuesta["turno"]);
-			},
-
-			error: function(respuesta) {
-				console.log(respuesta['responseText']);
-			}
-		});
-	}
-
-	function estatus(id,estatus){
-		$.ajax({
-			type: 'POST',
-			url: '../script/crud_pasantes.php',
-			data: {
-				"id": id,
-				"estatus": estatus,
-				"condicion": "cambio_estatus1",
-			},
-			dataType: "JSON",
-			success: function(respuesta) {
-				console.log(respuesta);
-
-				if(respuesta["estatus"]=="ok"){
-					Swal.fire({
-						title: 'Exito',
-						text: "Estatus Cambiado",
-						icon: 'success',
-						position: 'center',
-						showConfirmButton: false,
-						timer: 2000
-					});
-				}
-
-				if(respuesta["estatus"]=="repetidos"){
-					Swal.fire({
-						title: 'Repetidos',
-						text: "Ya se ha cambiado el estatus",
-						icon: 'info',
-						position: 'center',
-						showConfirmButton: false,
-						timer: 2000
-					});
-				}
-				if(estatus==2){
-					$('#estatus_'+id).html("<span style='color:green;'>Aceptada</span>");
-				}else if(estatus==3){
-					$('#estatus_'+id).html("<span style='color:red;'>Rechazada</span>");
-				}
-			},
-
-			error: function(respuesta) {
-				console.log(respuesta['responseText']);
-			}
-		});
-	}
-
-	function aceptar_pasante1(id){
 		Swal.fire({
 			title: 'Estas seguro?',
 			text: "Verifica los datos antes de darle aceptar por favor!",
@@ -645,7 +377,7 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Si, Eliminar registro!',
+			confirmButtonText: 'Si, Seguro!',
 			cancelButtonText: 'Cancelar'
 		}).then((result) => {
 			if (result.value) {
@@ -654,16 +386,84 @@ while($rowub2 = mysqli_fetch_array($procesoub2)) {
 					url: '../script/crud_pasantes.php',
 					dataType: "JSON",
 					data: {
-						"id": id,
+						"pasante_id": pasante_id,
+						"usuario_id": usuario_id,
+						"turno": turno,
+						"sede": sede,
 						"condicion": "aceptar_pasante1",
 					},
 
 					success: function(respuesta) {
 						console.log(respuesta);
+
+						if(respuesta["estatus"]=="ok"){
+							Swal.fire({
+								title: 'Correcto!',
+								text: respuesta["msg"],
+								icon: 'success',
+							})
+						}else if(respuesta["estatus"]=="error"){
+							Swal.fire({
+								title: 'Error',
+								text: respuesta["msg"],
+								icon: 'error',
+							})
+						}
+
 					},
 
 					error: function(respuesta) {
+						console.log(respuesta["responseText"]);
+					}
+				});
+			}
+		})
+	});
+
+	function rechazar_pasante1(pasante_id,usuario_id){
+		Swal.fire({
+			title: 'Estas seguro?',
+			text: "Los Cambios no se podran revertir!",
+			icon: 'warning',
+			showConfirmButton: true,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Si, Seguro!',
+			cancelButtonText: 'Cancelar'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					type: 'POST',
+					url: '../script/crud_pasantes.php',
+					dataType: "JSON",
+					data: {
+						"pasante_id": pasante_id,
+						"usuario_id": usuario_id,
+						"condicion": "rechazar_pasante1",
+					},
+
+					success: function(respuesta) {
 						console.log(respuesta);
+
+						if(respuesta["estatus"]=="ok"){
+							Swal.fire({
+								title: 'Correcto!',
+								text: respuesta["msg"],
+								icon: 'success',
+							})
+						}else if(respuesta["estatus"]=="error"){
+							Swal.fire({
+								title: 'Error',
+								text: respuesta["msg"],
+								icon: 'error',
+							})
+						}
+
+					},
+
+					error: function(respuesta) {
+						console.log(respuesta["responseText"]);
 					}
 				});
 			}

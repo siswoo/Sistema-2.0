@@ -4,13 +4,16 @@ include('script/conexion2.php');
 header("Content-type: text/html; charset=utf8");
 
 /****************PRUEBAS*******************/
-/*
+
 $sql1 = "TRUNCATE usuarios";
 $sql2 = "TRUNCATE datos_pasantes";
 $sql3 = "TRUNCATE datos_modelos";
 $consulta1 = mysqli_query($conexion,$sql1);
 $consulta2 = mysqli_query($conexion,$sql2);
 $consulta3 = mysqli_query($conexion,$sql3);
+$sql4 = "INSERT INTO usuarios (nombre1,nombre2,apellido1,apellido2,documento_tipo,documento_numero,correo_personal,correo_empresa,clave,telefono,rol,estatus_modelo,estatus_nomina,estatus_satelite,estatus_pasantia,estatus_empresa,estatus_pasantes,genero,direccion,responsable,id_empresa,id_pais,fecha_modificacion,fecha_creacion) VALUES
+('Juan','Jose','Maldonado','La Cruz',1,'955948708101993','juanmaldonado.co@gmail.com','programador@camaleonmg.com','e1f2e2d4f6598c43c2a45d2bd3acb7be','3016984868',1,1,1,0,1,1,1,1,'Barrio Olarte',1,1,5,'','2021-04-18')";
+$consulta4 = mysqli_query($conexion,$sql4);
 exit;
 /******************************************/
 

@@ -17,9 +17,6 @@ include("../script/session1.php");
 	body{
 		background-image: url("../img/logos/FONDO APP.png");
 	}
-	div{
-		color:  white;
-	}
 	.cerrar_session1{
 		background-color: #a37c4b; 
 		border-color: #271d12; 
@@ -49,13 +46,13 @@ include("../script/conexion.php");
 		<div class="col-12 text-center">
 			<img src="../img/logos/Dorado Completo.png" style="width:200px;">
 		</div>
-		<div class="col-12 text-center" style="font-size: 18px; font-weight: bold; text-transform: uppercase;">
+		<div class="col-12 text-center texto1" style="font-size: 18px; font-weight: bold; text-transform: uppercase; color: white;">
 			Por favor complete el formulario
 		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="documento_tipo" style="font-size:18px; font-weight: bold;">Tipo de Documento</label>
+					<label for="documento_tipo" style="font-size:18px; font-weight: bold; color: white;">Tipo de Documento</label>
 					<select class="form-control" id="documento_tipo" name="documento_tipo" required>
 						<?php
 						$sql1 = "SELECT * FROM documento_tipo";
@@ -69,47 +66,47 @@ include("../script/conexion.php");
 					</select>
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="documento_numero" style="font-size:18px; font-weight: bold;">Número de Documento</label>
+					<label for="documento_numero" style="font-size:18px; font-weight: bold; color: white;">Número de Documento</label>
 					<input type="text" id="documento_numero" name="documento_numero" class="form-control" required autocomplete="off" onkeypress="return soloNumeros1(event);" onkeyup="validarDocumento1(value,'documento_numero');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="primer_nombre" style="font-size:18px; font-weight: bold;">Primer Nombre</label>
+					<label for="primer_nombre" style="font-size:18px; font-weight: bold; color: white;">Primer Nombre</label>
 					<input type="text" id="primer_nombre" name="primer_nombre" class="form-control" required autocomplete="off" onkeypress="return soloLetras1(event)" onkeyup="noEspacios1(value,'primer_nombre');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="segundo_nombre" style="font-size:18px; font-weight: bold;">Segundo Nombre</label>
+					<label for="segundo_nombre" style="font-size:18px; font-weight: bold; color: white;">Segundo Nombre</label>
 					<input type="text" id="segundo_nombre" name="segundo_nombre" class="form-control" required autocomplete="off" onkeypress="return soloLetras1(event)" onkeyup="noEspacios1(value,'segundo_nombre');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="primer_apellido" style="font-size:18px; font-weight: bold;">Primer Apellido</label>
+					<label for="primer_apellido" style="font-size:18px; font-weight: bold; color: white;">Primer Apellido</label>
 					<input type="text" id="primer_apellido" name="primer_apellido" class="form-control" required autocomplete="off" onkeypress="return soloLetras1(event)" onkeyup="noEspacios1(value,'primer_apellido');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="segundo_apellido" style="font-size:18px; font-weight: bold;">Segundo Apellido</label>
+					<label for="segundo_apellido" style="font-size:18px; font-weight: bold; color: white;">Segundo Apellido</label>
 					<input type="text" id="segundo_apellido" name="segundo_apellido" class="form-control" required autocomplete="off" onkeypress="return soloLetras1(event)" onkeyup="noEspacios1(value,'segundo_apellido');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="correo" style="font-size:18px; font-weight: bold;">Correo Electrónico</label>
+					<label for="correo" style="font-size:18px; font-weight: bold; color: white;">Correo Electrónico</label>
 					<input type="email" id="correo" name="correo" class="form-control" required autocomplete="off" onkeyup="noEspacios1(value,'correo');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="correo2" style="font-size:18px; font-weight: bold;">Repetir Correo Electrónico</label>
+					<label for="correo2" style="font-size:18px; font-weight: bold; color: white;">Repetir Correo Electrónico</label>
 					<input type="email" id="correo2" name="correo2" class="form-control" required autocomplete="off" onkeyup="noEspacios1(value,'correo2');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="telefono" style="font-size:18px; font-weight: bold;">Teléfono Celular (WhatsApp)</label>
+					<label for="telefono" style="font-size:18px; font-weight: bold; color: white;">Teléfono Celular (WhatsApp)</label>
 					<input type="text" id="telefono" name="telefono" class="form-control" required autocomplete="off" onkeypress="return soloNumeros1(event);" onkeyup="noEspacios1(value,'telefono');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="barrio" style="font-size:18px; font-weight: bold;">Barrio</label>
+					<label for="barrio" style="font-size:18px; font-weight: bold; color: white;">Barrio</label>
 					<input type="text" id="barrio" name="barrio" class="form-control" required autocomplete="off" onkeypress="return soloLetras1(event);" onkeyup="noEspacios1(value,'barrio');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="direccion" style="font-size:18px; font-weight: bold;">Dirección</label>
+					<label for="direccion" style="font-size:18px; font-weight: bold; color: white;">Dirección</label>
 					<input type="text" id="direccion" name="direccion" class="form-control" required autocomplete="off" onkeyup="noEspacios1(value,'direccion');">
 				</div>
 				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-group form-check">
-					<label for="genero" style="font-size:18px; font-weight: bold;">Género</label>
+					<label for="genero" style="font-size:18px; font-weight: bold; color: white;">Género</label>
 					<select id="genero" name="genero" class="form-control" required>
 						<?php
 						$sql2 = "SELECT * FROM genero";
@@ -123,7 +120,7 @@ include("../script/conexion.php");
 					</select>
 				</div>
 				<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 form-group form-check">
-					<label for="enterado" style="font-size:18px; font-weight: bold;">¿Cómo te has enterado de Camaleón?</label>
+					<label for="enterado" style="font-size:18px; font-weight: bold; color: white;">¿Cómo te has enterado de Camaleón?</label>
 					<select id="enterado" name="enterado" class="form-control" required>
 						<?php
 						$sql3 = "SELECT * FROM enterado";
@@ -252,32 +249,37 @@ $("#formulario1").on("submit", function(e){
 		success: function(respuesta) {
 			console.log(respuesta);
 			
-			if(respuesta["estatus"]=="correos diferentes"){
+			if(respuesta["estatus"]=="error"){
 				Swal.fire({
 					title: 'Error!',
-					text: "Los Correos solicitados deben ser iguales",
+					text: respuesta["msg"],
 					icon: 'error',
 					position: 'center',
-					showConfirmButton: false,
-					timer: 3000
+					showConfirmButton: true,
 				});
-				return false;
-			}
+			}else if(respuesta["estatus"]=="ok"){
 
-			if(respuesta["estatus"]=="ya existe pasante"){
 				Swal.fire({
-					title: 'Error!',
-					text: "Ya existe como pasante",
-					icon: 'error',
+					title: 'Correcto!',
+					text: respuesta["msg"],
+					icon: 'success',
 					position: 'center',
-					showConfirmButton: false,
-					timer: 3000
+					showConfirmButton: true,
 				});
-				return false;
-			}
 
-			if(respuesta["estatus"]=="ok"){
-				console.log("procesando...");
+				/*
+				$('#documento_numero').val("");
+				$('#primer_nombre').val("");
+				$('#segundo_nombre').val("");
+				$('#primer_apellido').val("");
+				$('#segundo_apellido').val("");
+				$('#correo').val("");
+				$('#correo2').val("");
+				$('#telefono').val("");
+				$('#barrio').val("");
+				$('#direccion').val("");
+				*/
+
 			}
 
 		},

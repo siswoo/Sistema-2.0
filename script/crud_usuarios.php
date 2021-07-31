@@ -9,10 +9,11 @@ if($condicion=='login1'){
 	$estatus = $_POST['estatus'];
 
 	if($estatus=='Pasantia'){
-
-		$sql1 = "SELECT * FROM usuarios WHERE correo_empresa = '".$usuario."' and clave = '".$clave."' and estatus_pasantia = 1 LIMIT 1";
+		$sql1 = "SELECT dpa.id_usuarios as id, us.id_empresa as empresa FROM usuarios us 
+		INNER JOIN datos_pasantias dpa ON us.id = dpa.id_usuarios 
+		WHERE us.correo_empresa = '".$usuario."' and us.clave = '".$clave."' and us.estatus_pasantia = 1 LIMIT 1";
 	}else if($estatus=='Modelo'){
-		$sql1 = "SELECT * FROM usuarios WHERE correo_personal = '".$usuario."' and clave = '".$clave."' and estatus_modelo = 1 LIMIT 1";
+		$sql1 = "SELECT us.id as id, us.estatus_modelo as estatus_modelo, us.id_empresa as empresa FROM usuarios us WHERE us.correo_personal = '".$usuario."' and us.clave = '".$clave."' LIMIT 1";
 	}else if($estatus=='Nomina'){
 		$sql1 = "SELECT dno.id_usuarios as id, us.id_empresa as empresa FROM usuarios us 
 		INNER JOIN datos_nominas dno ON us.id = dno.id_usuarios 
@@ -27,6 +28,64 @@ if($condicion=='login1'){
 	$contador1 = mysqli_num_rows($proceso1);
 
 	if($contador1>=1){
+		if($estatus=='Modelo'){
+			while($row1 = mysqli_fetch_array($proceso1)) {
+				$usuario_id=$row1['id'];
+				$empresa=$row1['empresa'];
+
+				$sql2 = "SELECT us.estatus_modelo as estatus_modelo, dmo.id_usuarios as id, us.id_empresa as empresa FROM usuarios us 
+				INNER JOIN datos_modelos dmo ON us.id = dmo.id_usuarios 
+				WHERE us.id = ".$usuario_id." LIMIT 1";
+				$proceso2 = mysqli_query($conexion,$sql2);
+				$contador2 = mysqli_num_rows($proceso2);
+				
+				if($contador2>=1){
+					while($row2 = mysqli_fetch_array($proceso2)) {
+						$estatus_modelo=$row2['estatus_modelo'];
+						if($estatus_modelo==0){
+							$datos = [
+								"estatus" => $estatus,
+								"respuesta" => "error",
+								"msg" => "Su cuenta de Modelo no ha sido Activada!",
+								"sql1" => $sql1,
+							];
+							echo json_encode($datos);
+							exit;
+						}else if($estatus_modelo==2){
+							$datos = [
+								"estatus" => $estatus,
+								"respuesta" => "error",
+								"msg" => "Su cuenta de Modelo ha sido Rechazada!",
+								"sql1" => $sql1,
+							];
+							echo json_encode($datos);
+							exit;
+						}
+					}
+				}else if($contador2==0){
+					$datos = [
+						"sql1" => $sql1,
+						"respuesta" => "error",
+						"msg" => "Su cuenta de Modelo no ha sido Activada!",
+					];
+					echo json_encode($datos);
+					exit;
+				}
+
+				session_start();
+				$_SESSION["camaleonapp_id"]=$usuario_id;
+				$_SESSION["camaleonapp_estatus"]=$estatus;
+				$_SESSION["camaleonapp_empresa"]=$empresa;
+
+				$datos = [
+					"estatus" => $estatus,
+					"sql1" => $sql1,
+					"usuario_id" => $usuario_id,
+				];
+			}
+			echo json_encode($datos);
+			exit;
+		}
 		while($row1 = mysqli_fetch_array($proceso1)) {
 			$usuario_id=$row1['id'];
 			$empresa=$row1['empresa'];

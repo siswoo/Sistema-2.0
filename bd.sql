@@ -391,3 +391,18 @@ CREATE TABLE modulos_empresas (
 INSERT INTO modulos_empresas (id_modulos,id_empresas,estatus,fecha_creacion) VALUES 
 (2,1,1,"2021-07-29"),
 (3,1,1,"2021-07-29");
+
+DROP TABLE IF EXISTS turnos;
+CREATE TABLE turnos (
+	id INT AUTO_INCREMENT,
+	nombre VARCHAR(250) NOT NULL,
+	responsable INT NOT NULL,
+	fecha_modificacion date NOT NULL,
+	fecha_creacion date NOT NULL,
+	PRIMARY KEY (id)
+); ALTER TABLE turnos CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO turnos (nombre,fecha_creacion) VALUES 
+('Mañana','2021-07-30'),
+('Tarde','2021-07-30'),
+('Noche','2021-07-30');
